@@ -4,66 +4,88 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    static int[][] map;
-    static boolean[] visit;
-    static int last;
-    static List<Integer> list = new ArrayList<>();
-    static List<Integer> list2 = new ArrayList<>();
+    public static boolean[][] edge;
+    public static boolean[] visit; // if visit 'i', visit[i] = true
+    public static boolean isDeadlock; // if deadlock, isDeadlock = true
+    public static int firstId;
 
-    public static void dfs(int i){
+    public static List<Integer> firstProcessId = new ArrayList<>();
+    public static List<Integer> secondProcessId = new ArrayList<>();
+
+    public static void findDeadlock(int i){
+
         visit[i] = true;
+
         for (int j = 1; j < 100; j++){
-            if (map[i][j] == 1 && !visit[j]){
-                list.add(i);
-                list2.add(j);
-                dfs(j);
-            } else if (map[i][j] == 1 && j == last){
-                list.add(i);
-                list2.add(j);
+            if (edge[i][j] && !visit[j]) {
+                firstProcessId.add(i);
+                secondProcessId.add(j);
+                findDeadlock(j);
+            } else if (edge[i][j] && visit[j] && firstId == j){
+                firstProcessId.add(i);
+                secondProcessId.add(j);
+                isDeadlock = true;
+                break;
             }
         }
     }
-    public static void func(){
-        for (int i = 0; i < list.size()-1; i++){
-            while(true){
-                if (list.size() == i || list2.get(i) == list.get(i+1)){
+
+    public static void remove(){
+        for (int i = 1; i < firstProcessId.size(); i++){
+            if (firstProcessId.get(i) != secondProcessId.get(i-1)){
+                if (secondProcessId.get(i-1) == firstId){
                     break;
                 }
-                if (list2.get(i) != list.get(i+1)){
-                    list.remove(i);
-                    list2.remove(i);
-                }
+                firstProcessId.remove(i-1);
+                secondProcessId.remove(i-1);
+                i = 1;
             }
-
+        }
+        int last = firstProcessId.size()-1;
+        while(secondProcessId.get(last) != firstId){
+            firstProcessId.remove(last);
+            secondProcessId.remove(last);
+            last = firstProcessId.size()-1;
         }
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        map = new int[101][101];
+
+//        System.out.print("프로세스 정수 쌍을 총 몇개 입력할 것인지 입력해주세요 : ");
+
         visit = new boolean[101];
+        edge = new boolean[101][101];
+
         int num1, num2;
-        for (int i = 1; i <=100; i++){
+        for (int i = 1; i <= 100; i++){
             num1 = sc.nextInt();
             num2 = sc.nextInt();
-            map[num1][num2] = 1;
+            edge[num1][num2] = true;
         }
 
-        for (int i = 1; i <= 100; i++){
-            last = i;
-            dfs(i);
-            func();
-            for (int k = 0; k < list.size(); k++){
-                System.out.print("(" + list.get(k) + " " + list2.get(k) + ") ");
+
+        for (int j = 1; j <=100; j++){
+            firstId = j;
+            findDeadlock(j);
+            if (isDeadlock){
+                remove();
             }
-            if (list.size() != 0){
+            if (isDeadlock){
+                for (int i = 0; i < firstProcessId.size(); i++){
+                    System.out.print("(" + firstProcessId.get(i) + " " + secondProcessId.get(i) + ") ");
+                    if (i < firstProcessId.size()-1){
+                        System.out.print("--> ");
+                    }
+                }
                 System.out.println();
             }
-            list.clear();
-            list2.clear();
-            for (int j = 0; j <= 100; j++){
+            secondProcessId.clear();
+            firstProcessId.clear();
+            for (int i = 1; i <= 100; i++){
                 visit[i] = false;
             }
+            isDeadlock = false;
         }
 
     }
