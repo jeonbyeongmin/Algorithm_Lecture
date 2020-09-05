@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/[Algorithm_01]_01_20170206_전병민.iml" filepath="$PROJECT_DIR$/[Algorithm_01]_01_20170206_전병민.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deadlock.iml" filepath="$PROJECT_DIR$/deadlock.iml" />
     </modules>
   </component>
 </project>
