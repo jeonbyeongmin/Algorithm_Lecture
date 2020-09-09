@@ -1,18 +1,26 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static int[] arr;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("몇 개의 정수를 입력받을 지 입력하세요 : ");
-        int n = sc.nextInt();
-        arr = new int[n];
-        System.out.println("정수열을 입력해주세요 : ");
-        for (int i = 0; i < n; i++){
-            arr[i] = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+
+        // 파일로 입력받고 StringTokenizer를 이용하여 ','를 기준으로 값을 배열에 가져온다.
+        FileReader fr = new FileReader("data02.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String line = br.readLine();
+        StringTokenizer st = new StringTokenizer(line, ",");
+
+        int[] arr = new int[st.countTokens()];
+        int count = 0;
+
+        while (st.hasMoreTokens()) {
+            arr[count++] = Integer.parseInt(st.nextToken());
         }
+
+        // insertionSort 함수 호출
         insertionSort(arr);
 
+        // 출력
         for (int val : arr){
             System.out.print(val + " ");
         }
