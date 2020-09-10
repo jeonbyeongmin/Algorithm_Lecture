@@ -1,25 +1,30 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
     public static int[] arr;
     public static int[] temp;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("몇개의 정수를 입력할 것인지 입력해주세요 : ");
-        int n = sc.nextInt();
-        arr = new int[n];
-        temp = new int[n];
+    public static void main(String[] args) throws IOException {
 
-        System.out.println("정수열을 입력해주세요 : ");
+        FileReader fr = new FileReader("data02.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String line = br.readLine();
+        StringTokenizer st = new StringTokenizer(line,",");
 
-        for (int i = 0; i < n; i++){
-            arr[i] = sc.nextInt();
+        arr = new int[st.countTokens()];
+        temp = new int[arr.length];
+        int count = 0;
+
+        while(st.hasMoreTokens()){
+            arr[count++] = Integer.parseInt(st.nextToken());
         }
+
         mergeSort(0, arr.length-1);
 
         for (int val : arr){
             System.out.print(val + " ");
         }
+
     }
     public static void mergeSort(int left, int right){
         if (left < right){
@@ -32,7 +37,7 @@ public class Main {
             int tempIndex = p;
 
             while(p <= mid || q <= right){
-                if (q > right || arr[p] < arr[q]){
+                if (q > right || (p <= mid && arr[p] < arr[q])){
                     temp[tempIndex++] = arr[p++];
                 } else{
                     temp[tempIndex++] = arr[q++];
