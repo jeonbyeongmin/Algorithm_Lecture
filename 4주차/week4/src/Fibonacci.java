@@ -4,24 +4,38 @@ import java.util.Scanner;
 public class Fibonacci {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("n을 입력해주세요 : ");
-        int inputN = sc.nextInt();
-        System.out.println("Recursion 을 이용하려면 숫자 '1'을");
-        System.out.println("Bottom-up 을 이용하려면 숫자 '2'을");
-        System.out.println("Recursive Squaring 을 이용하려면 숫자 '3'을");
-        System.out.print("입력해주세요. : ");
-
+        System.out.println("1. Recursion");
+        System.out.println("2. Bottom-up");
+        System.out.println("3. Recursive squaring");
         int inputNumber = sc.nextInt();
 
         switch (inputNumber){
             case 1 :
-                System.out.println(recursionFibo(inputN));
+                System.out.println("[ Recursion을 이용하여 문제를 풉니다. ]");
+                for (int i = 0; i <= 50; i ++){
+                    if (i % 10 == 0) {
+                        System.out.println("************************************************************************");
+                    }
+                    System.out.println("f("+i+") = "+ recursionFibo(i));
+                }
                 break;
             case 2 :
-                System.out.println(bottomUpFibo(inputN));
+                System.out.println("[ Bottom-up을 이용하여 문제를 풉니다. ]");
+                for (int i = 0; i <= 50; i ++){
+                    if (i % 10 == 0) {
+                        System.out.println("************************************************************************");
+                    }
+                    System.out.println("f("+i+") = "+ bottomUpFibo(i));
+                }
                 break;
             case 3 :
-                System.out.println(recursiveSquaringFibo(inputN));
+                System.out.println("[ Recursive squaring을 이용하여 문제를 풉니다. ]");
+                for (int i = 0; i <= 50; i ++){
+                    if (i % 10 == 0) {
+                        System.out.println("************************************************************************");
+                    }
+                    System.out.println("f("+i+") = "+ recursiveSquaringFibo(i));
+                }
                 break;
             default:
                 System.out.println("1~3 이외에 다른 숫자를 입력했습니다.");
@@ -38,7 +52,7 @@ public class Fibonacci {
         }
     }
     static long bottomUpFibo(int n){
-        long[] arr = new long[n+1];
+        long[] arr = new long[51];
         arr[0] = 0;
         arr[1] = 1;
         for (int i = 2; i <= n; i++){
