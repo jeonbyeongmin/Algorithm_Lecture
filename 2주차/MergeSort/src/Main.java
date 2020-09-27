@@ -29,24 +29,28 @@ public class Main {
     public static void mergeSort(int left, int right){
         if (left < right){
             int mid = (left+right)/2;
+            // Divide
             mergeSort(left, mid);
             mergeSort(mid+1, right);
 
-            int p = left;
-            int q = mid+1;
-            int tempIndex = p;
+            // Conquer and Combine
+            merge(left, mid, right);
+        }
+    }
 
-            while(p <= mid || q <= right){
-                if (q > right || (p <= mid && arr[p] < arr[q])){
-                    temp[tempIndex++] = arr[p++];
-                } else{
-                    temp[tempIndex++] = arr[q++];
-                }
+    public static void merge(int left, int mid, int right){
+        int p = left;
+        int q = mid+1;
+        int tempIndex = p;
+        while(p <= mid || q <= right){
+            if (q > right || (p <= mid && arr[p] < arr[q])){
+                temp[tempIndex++] = arr[p++];
+            } else{
+                temp[tempIndex++] = arr[q++];
             }
-
-            for (int i = left; i <= right; i++){
-                arr[i] = temp[i];
-            }
+        }
+        for (int i = left; i <= right; i++){
+            arr[i] = temp[i];
         }
     }
 }

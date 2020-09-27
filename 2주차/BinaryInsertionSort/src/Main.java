@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        // 파일로 입력받고 StringTokenizer를 이용하여 ','를 기준으로 값을 배열에 가져온다.
         FileReader fr = new FileReader("data02.txt");
         BufferedReader br = new BufferedReader(fr);
         String line = br.readLine();
@@ -19,10 +18,8 @@ public class Main {
             arr[count++] = Integer.parseInt(st.nextToken());
         }
 
-        // insertionSort 함수 호출
         insertionSort(arr);
 
-        // 출력
         for (int val : arr){
             System.out.print(val + " ");
         }
