@@ -26,23 +26,24 @@ public class ClosestPairOfPoint {
     }
 
     // x값을 기준으로 sorting 되어 있다고 가정.
-    static double closestPair(int startX, int endX){
+    static double closestPair(int start, int end){
 
         // 좌표 수가 3이하면 브루트포스로 계산한다.
-        if (endX-startX+1 <= 3){
-            if (endX-startX == 2){
-                return bruteForce_ThreeElements(locationList.get(startX), locationList.get(startX+1), locationList.get(endX));
-            } else if (endX-startX == 1){
-                return bruteForce_TwoElements(locationList.get(startX), locationList.get(endX));
+        if (end-start+1 <= 3){
+            if (end-start == 2){
+                return bruteForce_ThreeElements(locationList.get(start),
+                        locationList.get(start+1), locationList.get(end));
+            } else if (end-start == 1){
+                return bruteForce_TwoElements(locationList.get(start), locationList.get(end));
             } else {
                 return -1;
             }
         }
 
         // 브루트포스로 구한 값부터 차근차근 왼쪽 구역, 오른쪽 구역까지 계산하여 d를 만들게 됨.
-        int mid = (startX + endX)/2;
-        double d1 = closestPair(startX, mid); // 왼쪽 구역에서의 최단 거리 계산
-        double d2 = closestPair(mid+1, endX); // 오른쪽 구역에서의 최단 거리 계산
+        int mid = (start + end)/2;
+        double d1 = closestPair(start, mid); // 왼쪽 구역에서의 최단 거리 계산
+        double d2 = closestPair(mid+1, end); // 오른쪽 구역에서의 최단 거리 계산
         double d = Math.min(d1, d2);
 
         // N/2 지점에서 x좌표 값으로부터 d 이내에 있는 좌표만 분리하기 위한 temp Array
@@ -50,7 +51,7 @@ public class ClosestPairOfPoint {
         location midValue = locationList.get(mid);
 
         // 분리하는 과정.
-        for (int i = startX; i <= endX; i++){
+        for (int i = start; i <= end; i++){
             double xLengthFromL = Math.abs(midValue.x - locationList.get(i).x);
             if (xLengthFromL < d){
                 dAwayFromL.add(locationList.get(i));
@@ -86,7 +87,7 @@ public class ClosestPairOfPoint {
         }
         return d;
     }
-    public static double bruteForce_TwoElements(location p1, location  p2){
+    static double bruteForce_TwoElements(location p1, location  p2){
         double x1 = p1.x;
         double y1 = p1.y;
 
@@ -95,7 +96,7 @@ public class ClosestPairOfPoint {
 
         return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
     }
-    public static double bruteForce_ThreeElements(location p1, location p2, location p3){
+    static double bruteForce_ThreeElements(location p1, location p2, location p3){
         double length1 = bruteForce_TwoElements(p1, p2);
         double length2 = bruteForce_TwoElements(p2, p3);
         double length3 = bruteForce_TwoElements(p1, p3);
@@ -129,7 +130,6 @@ public class ClosestPairOfPoint {
                 }
             }
         });
-
         // 결과값 출력.
         System.out.println("Output : " + closestPair(0, locationList.size()-1));
     }
