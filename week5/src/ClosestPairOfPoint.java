@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 public class ClosestPairOfPoint {
 
-    public static ArrayList<location> locationList;
+    public static ArrayList<location> locationList = new ArrayList<>();
 
     public static class location {
         public double x;
@@ -107,13 +107,30 @@ public class ClosestPairOfPoint {
     public static void main(String[] args) throws IOException {
         FileReader fr = new FileReader("data05_closest.txt");
         BufferedReader br = new BufferedReader(fr);
-        String line = br.readLine();
-        StringTokenizer st = new StringTokenizer(line,",");
-
-
-        while((line)){
-            arr[count++] = Integer.parseInt(st.nextToken());
+        String line;
+        while((line = br.readLine()) != null){
+            StringTokenizer st = new StringTokenizer(line,",");
+            double x = Double.parseDouble(st.nextToken());
+            double y = Double.parseDouble(st.nextToken());
+            location loc = new location(x, y);
+            locationList.add(loc);
         }
-    }
 
+        // x를 기준으로 Sort
+        locationList.sort(new Comparator<location>() {
+            @Override
+            public int compare(location o1, location o2) {
+                if (o1.x > o2.x){
+                    return 1;
+                } else if (o1.x == o2.x){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+
+        // 결과값 출력.
+        System.out.println("Output : " + closestPair(0, locationList.size()-1));
+    }
 }
