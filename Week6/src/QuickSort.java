@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -18,10 +16,28 @@ public class QuickSort {
             arr[count++] = Integer.parseInt(st.nextToken());
         }
 
+        System.out.println("*************** 중간값을 찾은 결과 *****************");
+        int mid = (arr.length-1)/2;
+        System.out.println(findK(arr, 0, arr.length-1, mid));
+
+        System.out.println("*************** 퀵소트 결과 *****************");
         quickSort(arr, 0, arr.length-1);
         for (int val : arr){
             System.out.print(val + " ");
         }
+        FileWriter fw = new FileWriter("data06_quick.txt");
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        int num = 0;
+
+        while (num != count-1) {
+            bw.append(arr[num] + " ");
+            num++;
+        }
+        bw.append(arr[num]+"");
+
+        bw.flush();
+        bw.close();
     }
     static void quickSort(int[] a, int p, int r) {
         if (p < r){
@@ -53,5 +69,20 @@ public class QuickSort {
         int temp = arr[a];
         arr[a] = arr[b];
         arr[b] = temp;
+    }
+
+    static int findK (int[] a, int p, int q, int k) {
+        if (p <= q) {
+            int pivot = partition(a, p, q);
+
+            if (pivot == k) {
+                return a[k];
+            } else if (pivot > k) {
+                return findK(a, p, pivot-1, k);
+            } else {
+                return findK(a, pivot+1, q, k);
+            }
+        }
+        return -1;
     }
 }
