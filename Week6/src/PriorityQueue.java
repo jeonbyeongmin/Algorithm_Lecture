@@ -5,8 +5,7 @@ import java.util.StringTokenizer;
 
 public class PriorityQueue {
     static int size = 1;
-    static heapTree heap[] = new heapTree[50];
-
+    static heapTree[] heap = new heapTree[1000];
     public static class heapTree {
         public int key;
         public String name;
@@ -16,21 +15,6 @@ public class PriorityQueue {
         public heapTree(int key, String name){
             this.key = key;
             this.name = name;
-        }
-        public heapTree(int key, String name, heapTree left, heapTree right){
-            this.key = key;
-            this.name = name;
-            this.left = left;
-            this.right = right;
-        }
-        public heapTree(heapTree that){
-            this.key = that.key;
-        }
-        public int getKey(){
-            return key;
-        }
-        public String getName(){
-            return name;
         }
     }
 
@@ -64,9 +48,8 @@ public class PriorityQueue {
     }
 
     static void buildMaxHeap(heapTree[] heap){
-        for (int i = (size-1)/2; i >= 1; i--){
+        for (int i = size/2; i >= 1; i--){
             maxHeapify(heap, i);
-            print(heap);
         }
     }
 
@@ -78,7 +61,7 @@ public class PriorityQueue {
         if (size != 1){
             if (isRight == 0) {
                 heap[size / 2].left = heap[size];
-            } else if (isRight == 1){
+            } else {
                 heap[size / 2].right = heap[size];
             }
         }
@@ -112,14 +95,11 @@ public class PriorityQueue {
     static heapTree extractMax(heapTree[] heap){
         heapTree max = max(heap);
         size--;
-        if (size <= 1){
-            return max;
-        }
 
         int isRight = size % 2;
         if (isRight == 0){
             heap[size/2].left = null;
-        } else if (isRight == 1){
+        } else {
             heap[size/2].right = null;
         }
 
@@ -128,7 +108,7 @@ public class PriorityQueue {
         maxHeapify(heap, 1);
 
         return max;
-}
+    }
 
     static void increase_key(heapTree[] heap, int index, int keyUp){
         if (heap[index].key < keyUp){
@@ -139,28 +119,19 @@ public class PriorityQueue {
         }
     }
 
-    static void delete(heapTree[] heap, int x){
-        boolean isExist = false;
-        for (int i = 1; i < size; i++){
-            if (heap[i].key == x){
-                isExist = true;
-                size--;
+    static void delete(heapTree[] heap, int index){
+        size--;
 
-                int isRight = size % 2;
-                if (isRight == 0){
-                    heap[size/2].left = null;
-                } else if (isRight == 1){
-                    heap[size/2].right = null;
-                }
+        int isRight = size % 2;
+        if (isRight == 0){
+            heap[size/2].left = null;
+        } else if (isRight == 1){
+            heap[size/2].right = null;
+        }
 
-                heap[i].key = heap[size].key;
-                heap[i].name = heap[size].name;
-                maxHeapify(heap, i);
-            }
-        }
-        if (isExist == false){
-            System.out.println("해당 키값을 가진 노드가 없습니다..");
-        }
+        heap[index].key = heap[size].key;
+        heap[index].name = heap[size].name;
+        buildMaxHeap(heap);
     }
 
     static void print(heapTree[] heap){
@@ -177,36 +148,28 @@ public class PriorityQueue {
         System.out.println();
     }
 
-    static boolean iskThNumberSmaller(int k, int x){
-        // heap 안에 있는 K번째 수가 x보다 작은지 판단
-        // 만약 x가 70이라고 가정하고 k가 5라고 하면
-        // 힙에서 70보다 큰 수를 카운팅하면 count는 4이다.
-        // 그러면 k가 5라는 것은 이 힙에서 5번째로 크다는 것이기 때문에
-        // k는 70보다 큰 수일 수가 없다.
-        // 따라서 x보다 큰 수를 따라서 루프를 돌면된다.
-        // 여기서 힙은 서브트리에서 루트는 항상 자신의 자식들 보다 큰 값을 가진다는 특성을
-        // 적용하여 루프를 만들수 있다.
 
-        int biggerCount = 0;
-        int indexCount = 1;
-
-        if (heap[indexCount].key < x){
-            biggerCount = 0;
-        } else {
-            while(biggerCount <= k){
-                if (heap[indexCount].left.key > x && heap[indexCount].right.key <= x){
-
-                }
-
+    static int count = 0;
+    static boolean iskThNumberSmaller(heapTree heap, int k, int x){
+        if (heap.key > x){
+            count++;
+            if (count >= k){
+                return false; // count가 이미 k개 이상이이라는 것은 k번째 수도 x보다 크다는 것.
             }
+            iskThNumberSmaller(heap.left, k, x);
+            iskThNumberSmaller(heap.right, k, x);
         }
-
-        return false;
+        if (count < k){ // x보다 큰 값들의 개수가 k보다 작다는 것은 k번째부터 x보다 작다는 것을 의미.
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static void main(String[] args) throws IOException{
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data06_heap.txt"), "euc-kr"));
+        BufferedReader br = new BufferedReader(new InputStreamReader
+                (new FileInputStream("data06_heap.txt"), "euc-kr"));
         String line;
 
         while((line = br.readLine()) != null) {
@@ -217,6 +180,9 @@ public class PriorityQueue {
         }
         print(heap);
 
+
+//        System.out.println("4번째로 큰 수가 81보다 작은가? : " + iskThNumberSmaller(max(heap), 4, 81));
+//        System.out.println("X보다 큰 수의 개수 : " + count);
 
         Scanner sc = new Scanner(System.in);
         int check = 0;

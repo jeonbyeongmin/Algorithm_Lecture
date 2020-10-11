@@ -16,15 +16,19 @@ public class QuickSort {
             arr[count++] = Integer.parseInt(st.nextToken());
         }
 
+
         System.out.println("*************** 중간값을 찾은 결과 *****************");
         int mid = (arr.length-1)/2;
         System.out.println(findK(arr, 0, arr.length-1, mid));
+
 
         System.out.println("*************** 퀵소트 결과 *****************");
         quickSort(arr, 0, arr.length-1);
         for (int val : arr){
             System.out.print(val + " ");
         }
+
+
         FileWriter fw = new FileWriter("data06_quick.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
@@ -59,6 +63,7 @@ public class QuickSort {
         swap(a, i, r);
         return i;
     }
+
     static int randomizedPartition(int[] a, int p, int r){
         Random random = new Random();
         int i = random.nextInt(a.length-1);
