@@ -8,13 +8,12 @@ import java.util.StringTokenizer;
 public class Knapsack {
 
     public static void main(String[] args) throws IOException {
-
-        FileReader fr = new FileReader("data10_knapsack.txt");
+        FileReader fr = new FileReader("data09_knapsack.txt");
         BufferedReader br = new BufferedReader(fr);
         String line;
 
-        int[] value = new int[50];
-        int[] weight = new int[50];
+        int[] value = new int[51];
+        int[] weight = new int[51];
         int itemNum = 0;
 
         while((line = br.readLine()) != null){

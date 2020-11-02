@@ -1,10 +1,12 @@
 
 public class LIS {
+
     public static int count;
     public static int[] trace;
+
     public static void main(String[] args) {
         int[] sequence = {9, 1, 3, 7, 5, 6, 10};
-        int answer[] = lis(sequence);
+        int[] answer = lis(sequence);
 
         System.out.println("증가하는 가장 긴 부분 수열의 길이 : " + count);
         System.out.print("증가하는 가장 긴 부분 수열 : ");
@@ -22,7 +24,6 @@ public class LIS {
         int[] lis = new int[a.length];
         trace = new int[a.length];
         count = 0;
-
         for (int i = 0; i < a.length; i++) {
             lis[i] = 1;
             trace[i] = -1;
