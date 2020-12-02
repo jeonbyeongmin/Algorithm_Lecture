@@ -16,14 +16,12 @@ public class Huffman {
             this.left = null;
             this.right = null;
         }
-
         public Node(char alpha){
             this.freq = 0;
             this.alpha = alpha;
             this.left = null;
             this.right = null;
         }
-
         public Node(char alpha, int freq){
             this.freq = freq;
             this.alpha = alpha;
@@ -118,7 +116,7 @@ public class Huffman {
         for (int i = 1; i <= n-1; i++){
             Node x = heap.extractMin();
             Node y = heap.extractMin();
-            Node z = new Node('w', x.freq + y.freq);
+            Node z = new Node('!', x.freq + y.freq);
 
             z.left = x;
             z.right = y;
@@ -169,7 +167,6 @@ public class Huffman {
         writeHuffmanTable(root, tempArr, 0);
 
 
-        /*************************   encode 이후 파일에 저장 ************************************/
         // 테이블 데이터 저장
         FileWriter tableData = new FileWriter("201702068_table.txt");
         for (char key : alphaCode.keySet()){
@@ -208,7 +205,7 @@ public class Huffman {
         String line4;
 
         // 인코딩된 데이터를 이용해서 허프만 트리 생성
-        Node huffmanTree = new Node('w');
+        Node huffmanTree = new Node('!');
         while((line4 = br4.readLine()) != null){
             StringTokenizer st = new StringTokenizer(line4, " ");
             char alpha = st.nextToken().charAt(0);
@@ -226,7 +223,7 @@ public class Huffman {
                 } else {
                     tempNode = tempNode.right;
                 }
-                if (tempNode.alpha != 'w'){
+                if (tempNode.alpha != '!'){
                     decoded.write(tempNode.alpha);
                     tempNode = huffmanTree;
                 }
@@ -246,20 +243,14 @@ public class Huffman {
         }
         if (code.charAt(at) == '0'){
             if (parent.left == null){
-                parent.left = new Node('w');
+                parent.left = new Node('!');
             }
             makeHuffmanTree(parent.left, alpha, code, at+1, length);
         } else {
             if (parent.right == null){
-                parent.right = new Node('w');
+                parent.right = new Node('!');
             }
             makeHuffmanTree(parent.right, alpha, code, at+1, length);
         }
-    }
-
-    public static void preorder(Node root){ // 트리가 제대로 만들어졌는지 디버깅하기 위한 용도
-        System.out.print(root.alpha); //먼저 가운데 출력
-        if(root.left!=null) preorder(root.left); //그 다음 왼쪽
-        if(root.right!=null) preorder(root.right); //마지막 오른쪽
     }
 }
